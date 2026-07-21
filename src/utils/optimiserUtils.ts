@@ -1,6 +1,6 @@
 import type { Timetable, DayName, Subject } from '../types'
 import { DAY_NAMES } from '../types'
-import { GRADE_POINTS, computeRequiredHours } from './gradePredictor'
+import { GRADE_POINTS, computeRequiredHours, computeMaintenanceHoursPerWeek } from './gradePredictor'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -105,29 +105,32 @@ export function computeAllocations(
     return { allocations, totalSlotsNeeded: 0 }
   }
 
-  const gaps = subjects.map(s => {
+  // Compute raw slots/week for each subject.
+  // Subjects with a grade gap get improvement hours.
+  // Subjects already at their target still get maintenance hours so the
+  // optimiser prevents them from dropping below their current grade.
+  let totalSlotsNeeded = 0
+  subjects.forEach(s => {
     const target = s.targetGrade ?? s.currentGrade
     const targetPts = GRADE_POINTS[target]
     const currentPts = GRADE_POINTS[s.currentGrade]
-    return Math.max(0, targetPts - currentPts)
-  })
+    const gap = Math.max(0, targetPts - currentPts)
+    const difficulty = s.difficulty ?? 'medium'
 
-  const totalGap = gaps.reduce((sum, g) => sum + g, 0)
-  if (totalGap === 0) return { allocations, totalSlotsNeeded: 0 }
-
-  // Compute raw slots/week for each subject
-  let totalSlotsNeeded = 0
-  subjects.forEach((s, idx) => {
-    if (gaps[idx] === 0) {
-      allocations.set(s.id, 0)
-      return
+    let hoursPerWeek: number
+    if (gap > 0) {
+      // Needs improvement — compute total hours to close the gap
+      const requiredHoursTotal = computeRequiredHours(
+        s.currentGrade, target, efficiency, totalWeeks, difficulty,
+      )
+      // Cap at a reasonable ceiling (e.g. U→A* with 1 week)
+      hoursPerWeek = Math.min(requiredHoursTotal / totalWeeks, 40)
+    } else {
+      // Already at target — allocate exactly the maintenance threshold so
+      // the grade is held steady rather than allowed to drop
+      hoursPerWeek = computeMaintenanceHoursPerWeek(difficulty)
     }
-    const target = s.targetGrade ?? s.currentGrade
-    const requiredHoursTotal = computeRequiredHours(
-      s.currentGrade, target, efficiency, totalWeeks, s.difficulty ?? 'medium',
-    )
-    // Cap at a reasonable ceiling to avoid edge cases (e.g. U→A* with 1 week)
-    const hoursPerWeek = Math.min(requiredHoursTotal / totalWeeks, 40)
+
     const slotsPerWeek = Math.ceil(hoursPerWeek / 0.25)
     allocations.set(s.id, slotsPerWeek)
     totalSlotsNeeded += slotsPerWeek

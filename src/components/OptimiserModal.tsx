@@ -108,10 +108,9 @@ export default function OptimiserModal({
   const { efficiency } = computeBalanceStats(hourTotals)
 
   // ── Pre-checks ──────────────────────────────────────────────────────────────
-  const hasGap = subjects.some(s => {
-    const target = s.targetGrade ?? s.currentGrade
-    return GRADE_POINTS[target] > GRADE_POINTS[s.currentGrade]
-  })
+  // The optimiser now handles both improvement (gap > 0) AND maintenance
+  // (already at target) so we only need at least one subject to proceed.
+  const hasSubjects = subjects.length > 0
 
   // ── Replaceable slot stats ───────────────────────────────────────────────────
   const replaceableStats = useMemo(() => {
@@ -130,9 +129,9 @@ export default function OptimiserModal({
   }), [weekdayBias, minProtectedSlots, capEnabled, maxSubjectFraction])
 
   const previewTimetable = useMemo(() => {
-    if (!hasGap || totalWeeks <= 0) return timetable
+    if (!hasSubjects || totalWeeks <= 0) return timetable
     return optimiseTimetable(timetable, subjects, totalWeeks, efficiency, options)
-  }, [timetable, subjects, totalWeeks, efficiency, options, hasGap])
+  }, [timetable, subjects, totalWeeks, efficiency, options, hasSubjects])
 
   const diffRows = useMemo(
     () => buildDiff(timetable, previewTimetable, subjects),
@@ -173,12 +172,9 @@ export default function OptimiserModal({
   }
 
   // ── Priority order preview (for user reference) ──────────────────────────────
+  // Now includes ALL subjects: those with a gap (improving) and those at target (maintaining).
   const priorityOrder = useMemo(() => {
     return [...subjects]
-      .filter(s => {
-        const target = s.targetGrade ?? s.currentGrade
-        return GRADE_POINTS[target] > GRADE_POINTS[s.currentGrade]
-      })
       .sort((a, b) => {
         const pa = b.priority ?? 2
         const pb = a.priority ?? 2
@@ -200,17 +196,17 @@ export default function OptimiserModal({
           <div>
             <h2 className="om-header__title">Optimise Timetable</h2>
             <p className="om-header__sub">
-              Replaces free / rest / fun slots with study time to hit your target grades.
-              Locked slots are never touched.
+              Replaces free / rest / fun slots with study time to hit target grades
+              and maintain grades already at target. Locked slots are never touched.
             </p>
           </div>
           <button className="om-close-btn" onClick={onClose} aria-label="Close">✕</button>
         </div>
 
-        {/* No-gap warning */}
-        {!hasGap && (
+        {/* No-subjects warning */}
+        {!hasSubjects && (
           <div className="om-warning">
-            ⚠️ No subjects have a grade gap. Set higher target grades in the <strong>Subjects &amp; Grades</strong> tab first.
+            ⚠️ No subjects defined. Add subjects in the <strong>Subjects &amp; Grades</strong> tab first.
           </div>
         )}
 
@@ -352,18 +348,21 @@ export default function OptimiserModal({
               <section className="om-section">
                 <h3 className="om-section__title">Fill Order</h3>
                 <p className="om-field__hint" style={{ marginBottom: '8px' }}>
-                  Subjects are filled in this order (priority → gap size):
+                  Subjects filled in this order — improving grades first, then maintaining:
                 </p>
                 <ol className="om-fill-order">
                   {priorityOrder.map((s, i) => {
                     const gap = GRADE_POINTS[s.targetGrade ?? s.currentGrade] - GRADE_POINTS[s.currentGrade]
                     const priorityLabel = s.priority === 3 ? '⭐ High' : s.priority === 1 ? 'Low' : 'Normal'
+                    const modeLabel = gap > 0
+                      ? `gap ${gap} pt${gap !== 1 ? 's' : ''}`
+                      : '🔒 maintain'
                     return (
                       <li key={s.id} className="om-fill-order__item">
                         <span className="om-fill-order__num">{i + 1}</span>
                         <span className="om-fill-order__swatch" style={{ background: s.colour }} />
                         <span className="om-fill-order__name">{s.name}</span>
-                        <span className="om-fill-order__meta">{priorityLabel} · gap {gap} pt{gap !== 1 ? 's' : ''}</span>
+                        <span className="om-fill-order__meta">{priorityLabel} · {modeLabel}</span>
                       </li>
                     )
                   })}
@@ -382,7 +381,7 @@ export default function OptimiserModal({
                   : <span className="om-badge om-badge--none">no changes</span>}
               </h3>
 
-              {(!hasGap || totalWeeks <= 0) ? (
+              {(!hasSubjects || totalWeeks <= 0) ? (
                 <p className="om-field__hint">Fix the warnings above to see a preview.</p>
               ) : diffRows.length === 0 ? (
                 <p className="om-field__hint">Nothing to change — timetable is already optimised.</p>
@@ -427,7 +426,7 @@ export default function OptimiserModal({
             </section>
 
             {/* Day-by-day slot summary */}
-            {hasGap && totalWeeks > 0 && totalChanges > 0 && (
+            {hasSubjects && totalWeeks > 0 && totalChanges > 0 && (
               <section className="om-section om-section--full">
                 <h3 className="om-section__title">Changes by Day</h3>
                 <div className="om-day-grid">
@@ -459,7 +458,7 @@ export default function OptimiserModal({
           <button
             className="om-btn om-btn--primary"
             onClick={handleApply}
-            disabled={!hasGap || totalWeeks <= 0 || replaceableStats.total === 0}
+            disabled={!hasSubjects || totalWeeks <= 0 || replaceableStats.total === 0}
           >
             {applyAll ? `Apply to all ${Object.keys(timetables).length} timetables` : 'Apply optimisation'}
           </button>

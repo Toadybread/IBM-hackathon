@@ -103,6 +103,16 @@ export function predictGrade(
 }
 
 /**
+ * Raw study hours per week needed to maintain the current grade.
+ * The optimiser uses this for subjects already at their target grade.
+ */
+export function computeMaintenanceHoursPerWeek(
+  difficulty: SubjectDifficulty = 'medium',
+): number {
+  return MAINTENANCE_HOURS_PER_WEEK * DIFFICULTY_FACTORS[difficulty].maintenance
+}
+
+/**
  * Compute the raw study hours needed over a full plan to reach `targetGrade`
  * from `currentGrade` at a given efficiency level.
  *
