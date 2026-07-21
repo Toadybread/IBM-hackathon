@@ -1,0 +1,119 @@
+/* ─── WeekPlan ───────────────────────────────────────────────────────────── */
+
+.week-plan {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.week-plan__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.week-plan__empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.week-plan__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.week-plan__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+}
+
+.week-plan__index {
+  color: var(--text-muted);
+  font-size: 12px;
+  min-width: 18px;
+}
+
+.week-plan__type-select {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  flex: 1 1 140px;
+  max-width: 160px;
+}
+
+.week-plan__weeks-input {
+  width: 56px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  text-align: right;
+}
+
+.week-plan__weeks-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.week-plan__delete-btn {
+  background: none;
+  border: none;
+  font-size: 15px;
+  padding: 2px 4px;
+  color: var(--text-muted);
+  transition: color 0.15s;
+  margin-left: auto;
+}
+
+.week-plan__delete-btn:hover {
+  color: #e74c3c;
+}
+
+.week-plan__add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  transition: opacity 0.15s;
+}
+
+.week-plan__add-btn:hover {
+  opacity: 0.88;
+}
+
+.week-plan__summary {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.week-plan__summary strong {
+  color: var(--text);
+}

@@ -1,0 +1,235 @@
+/* ─── GradePredictor ─────────────────────────────────────────────────────── */
+
+.grade-predictor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.grade-predictor__empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ─── Balance card ───────────────────────────────────────────────────────── */
+
+.grade-predictor__balance-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+}
+
+.grade-predictor__card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+
+.grade-predictor__stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.grade-predictor__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 90px;
+}
+
+.grade-predictor__stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.grade-predictor__stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Breakdown bar */
+
+.grade-predictor__bar {
+  display: flex;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--border);
+  margin-bottom: 8px;
+}
+
+.grade-predictor__bar-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.grade-predictor__bar-segment--study {
+  background: var(--accent);
+}
+
+.grade-predictor__bar-segment--rec {
+  background: #22c55e;
+}
+
+.grade-predictor__bar-segment--other {
+  background: #cbd5e1;
+}
+
+.grade-predictor__bar-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.grade-predictor__legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.grade-predictor__legend-dot:first-child {
+  margin-left: 0;
+}
+
+.grade-predictor__legend-dot--study {
+  background: var(--accent);
+}
+
+.grade-predictor__legend-dot--rec {
+  background: #22c55e;
+}
+
+.grade-predictor__legend-dot--other {
+  background: #cbd5e1;
+}
+
+.grade-predictor__balance-text {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.grade-predictor__balance-text strong {
+  color: var(--text);
+}
+
+/* ─── Prediction table ───────────────────────────────────────────────────── */
+
+.grade-predictor__table-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  overflow-x: auto;
+}
+
+.grade-predictor__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.grade-predictor__table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border);
+}
+
+.grade-predictor__table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.grade-predictor__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.grade-predictor__table tbody tr:hover td {
+  background: var(--bg);
+}
+
+.grade-predictor__colour-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.grade-predictor__grade-cell {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Predicted grade badges */
+
+.grade-predictor__predicted {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.grade-predictor__predicted--up {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.grade-predictor__predicted--down {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.grade-predictor__predicted--same {
+  background: var(--border);
+  color: var(--text-muted);
+}
+
+.grade-predictor__weeks-note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.grade-predictor__weeks-note strong {
+  color: var(--text);
+}
+
+/* ─── Model note ─────────────────────────────────────────────────────────── */
+
+.grade-predictor__model-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  line-height: 1.7;
+}

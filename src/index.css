@@ -1,0 +1,73 @@
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── CSS Variables ──────────────────────────────────────────────────────── */
+:root {
+  /* Activity colours */
+  --color-school: #4a90d9;
+  --color-work: #e8a838;
+  --color-rest: #7ed321;
+  --color-free: #9b59b6;
+  --color-fun: #e74c3c;
+
+  /* UI palette */
+  --bg: #ffffff;
+  --surface: #f7f8fa;
+  --border: #e5e7eb;
+  --text: #1f2328;
+  --text-muted: #57606a;
+  --accent: #3b82d4;
+
+  /* Typography */
+  --font: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --font-size: 14px;
+  --line-height: 1.6;
+
+  /* Spacing */
+  --radius: 6px;
+  --gap: 12px;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+html,
+body {
+  height: 100%;
+  font-family: var(--font);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: var(--text);
+  background: var(--bg);
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}

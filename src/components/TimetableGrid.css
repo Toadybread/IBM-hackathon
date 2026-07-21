@@ -1,0 +1,137 @@
+/* ─── Controls bar above the grid ─────────────────────────────────────────── */
+.tg-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0 10px;
+  flex-shrink: 0;
+}
+
+.tg-mode-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.tg-mode-btn:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.tg-mode-btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 500;
+}
+
+.tg-clear-btn {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tg-clear-btn:hover {
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+/* ─── Scrollable wrapper ───────────────────────────────────────────────────── */
+.tg-scroll {
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── CSS Grid ─────────────────────────────────────────────────────────────── */
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 52px repeat(7, 1fr);
+  width: 100%;
+  min-width: 480px;
+}
+
+/* ─── Header row ───────────────────────────────────────────────────────────── */
+.tg-header-cell {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 0;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}
+
+/* Top-left corner spacer */
+.tg-header-cell:first-child {
+  border-bottom-color: transparent;
+}
+
+/* ─── Time label column ────────────────────────────────────────────────────── */
+.tg-time-label {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding-right: 6px;
+  height: 20px;
+  line-height: 20px;
+  user-select: none;
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+/* ─── Slot cells ───────────────────────────────────────────────────────────── */
+.tg-cell {
+  height: 20px;
+  cursor: crosshair;
+  user-select: none;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  box-sizing: border-box;
+}
+
+/* Slightly more visible top-border at the start of each hour */
+.tg-cell--hour-start {
+  border-top: 1px solid #ddd;
+}
+
+/* ─── Colour legend ────────────────────────────────────────────────────────── */
+.tg-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  padding: 8px 4px;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.tg-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #57606a;
+}
+
+.tg-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
