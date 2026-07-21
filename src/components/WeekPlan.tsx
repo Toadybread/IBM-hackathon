@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from 'react'
-import type { WeekPeriod, Timetable } from '../types'
+import type { WeekPeriod, NamedTimetable } from '../types'
 import { computeTotals } from '../utils/timetableUtils'
 import type { HourTotals } from '../utils/timetableUtils'
 import './WeekPlan.css'
@@ -10,21 +10,19 @@ interface WeekPlanProps {
   weekPlan: WeekPeriod[]
   onWeekPlanChange: (plan: WeekPeriod[]) => void
   onTotalsChange: (totals: HourTotals, totalWeeks: number) => void
-  schoolTimetable: Timetable
-  holidayTimetable: Timetable
+  timetables: Record<string, NamedTimetable>
 }
 
 export default function WeekPlan({
   weekPlan,
   onWeekPlanChange,
   onTotalsChange,
-  schoolTimetable,
-  holidayTimetable,
+  timetables,
 }: WeekPlanProps) {
   // ── Derived totals ──────────────────────────────────────────────────────────
   const { totals, totalWeeks } = useMemo(
-    () => computeTotals(weekPlan, schoolTimetable, holidayTimetable),
-    [weekPlan, schoolTimetable, holidayTimetable],
+    () => computeTotals(weekPlan, timetables),
+    [weekPlan, timetables],
   )
 
   // ── Propagate totals upward whenever they change ────────────────────────────
@@ -37,9 +35,11 @@ export default function WeekPlan({
     .filter(([key]) => key.startsWith('study-'))
     .reduce((sum, [, h]) => sum + h, 0)
 
+  const timetableList = Object.values(timetables)
+
   // ── Handlers ────────────────────────────────────────────────────────────────
-  function handleTypeChange(id: string, type: 'school' | 'holiday') {
-    onWeekPlanChange(weekPlan.map(p => (p.id === id ? { ...p, type } : p)))
+  function handleTimetableChange(id: string, timetableId: string) {
+    onWeekPlanChange(weekPlan.map(p => (p.id === id ? { ...p, timetableId } : p)))
   }
 
   function handleWeeksChange(id: string, weeks: number) {
@@ -52,9 +52,10 @@ export default function WeekPlan({
   }
 
   function handleAddPeriod() {
+    const firstId = timetableList[0]?.id ?? 'school'
     const newPeriod: WeekPeriod = {
       id: crypto.randomUUID(),
-      type: 'school',
+      timetableId: firstId,
       weeks: 1,
     }
     onWeekPlanChange([...weekPlan, newPeriod])
@@ -76,12 +77,17 @@ export default function WeekPlan({
 
               <select
                 className="week-plan__type-select"
-                value={period.type}
-                onChange={e => handleTypeChange(period.id, e.target.value as 'school' | 'holiday')}
-                aria-label="Period type"
+                value={period.timetableId}
+                onChange={e => handleTimetableChange(period.id, e.target.value)}
+                aria-label="Timetable type"
               >
-                <option value="school">School Week</option>
-                <option value="holiday">Holiday Week</option>
+                {timetableList.map(nt => (
+                  <option key={nt.id} value={nt.id}>{nt.name}</option>
+                ))}
+                {/* Fallback: if the referenced timetable was deleted, show it as unknown */}
+                {!timetables[period.timetableId] && (
+                  <option value={period.timetableId}>(deleted timetable)</option>
+                )}
               </select>
 
               <input

@@ -41,11 +41,11 @@
 }
 
 .palette-row:hover {
-  background: #eef1f5;
+  background: var(--border, #eef1f5);
 }
 
 .palette-row--selected {
-  background: #e8f0fe;
+  background: color-mix(in srgb, var(--accent, #3b82d4) 15%, transparent);
   border-left-color: var(--accent, #3b82d4);
 }
 
@@ -82,7 +82,7 @@
 }
 
 .palette-name-input:focus {
-  background: #fff;
+  background: var(--bg, #fff);
   border-radius: 3px;
   box-shadow: 0 0 0 1px var(--accent, #3b82d4);
 }
@@ -92,7 +92,7 @@
   font-size: 12px;
   border: 1px solid var(--border, #e5e7eb);
   border-radius: 3px;
-  background: #fff;
+  background: var(--bg, #fff);
   color: var(--text, #1f2328);
   padding: 1px 2px;
   cursor: pointer;
@@ -142,5 +142,5 @@
 }
 
 .palette-add-btn:hover {
-  background: #e8f0fe;
+  background: color-mix(in srgb, var(--accent, #3b82d4) 12%, transparent);
 }

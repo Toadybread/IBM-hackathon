@@ -1,4 +1,4 @@
-import type { WeekPeriod, Timetable } from '../types'
+import type { WeekPeriod, NamedTimetable } from '../types'
 import { DAY_NAMES } from '../types'
 
 /**
@@ -13,22 +13,24 @@ export interface HourTotals {
  * Compute total hours per activity across a week plan.
  *
  * For each period:
- *   - Choose the relevant timetable (school vs holiday).
+ *   - Look up the relevant timetable by period.timetableId.
  *   - Count how many slots each activity occupies across all 7 days.
  *   - Multiply by 0.25 h/slot × period.weeks.
  *
+ * Periods whose timetableId does not exist in the map are skipped.
  * Returns the aggregated totals and the sum of all weeks.
  */
 export function computeTotals(
   weekPlan: WeekPeriod[],
-  schoolTimetable: Timetable,
-  holidayTimetable: Timetable,
+  timetables: Record<string, NamedTimetable>,
 ): { totals: HourTotals; totalWeeks: number } {
   const totals: HourTotals = {}
   let totalWeeks = 0
 
   for (const period of weekPlan) {
-    const timetable = period.type === 'school' ? schoolTimetable : holidayTimetable
+    const named = timetables[period.timetableId]
+    if (!named) continue
+    const timetable = named.timetable
     totalWeeks += period.weeks
 
     for (const day of DAY_NAMES) {

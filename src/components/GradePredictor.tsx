@@ -1,6 +1,6 @@
 import type { Subject } from '../types'
 import { GRADE_POINTS } from '../utils/gradePredictor'
-import { computeBalanceStats, predictGrade } from '../utils/gradePredictor'
+import { computeBalanceStats, predictGrade, computeRequiredHours } from '../utils/gradePredictor'
 import type { HourTotals } from '../utils/timetableUtils'
 import './GradePredictor.css'
 
@@ -50,11 +50,21 @@ export default function GradePredictor({ subjects, totals, totalWeeks }: GradePr
   const rows = subjects.map(subject => {
     const subjectHours = totals[`study-${subject.id}`] ?? 0
     const effectiveHours = subjectHours * efficiency
-    const predicted = predictGrade(subject.currentGrade, subjectHours, efficiency, totalWeeks)
+    const diff = subject.difficulty ?? 'medium'
+    const predicted = predictGrade(subject.currentGrade, subjectHours, efficiency, totalWeeks, diff)
     const currentPoints = GRADE_POINTS[subject.currentGrade]
     const predictedPoints = GRADE_POINTS[predicted]
     const delta = predictedPoints - currentPoints
-    return { subject, subjectHours, effectiveHours, predicted, delta }
+
+    // ── Gap analysis ──────────────────────────────────────────────────────
+    const target = subject.targetGrade ?? subject.currentGrade
+    const targetPoints = GRADE_POINTS[target]
+    const onTrack = predictedPoints >= targetPoints
+    const requiredHours = computeRequiredHours(subject.currentGrade, target, efficiency, totalWeeks, diff)
+    const hoursGap = onTrack ? 0 : requiredHours - subjectHours
+    const hoursPerWeekGap = totalWeeks > 0 ? hoursGap / totalWeeks : 0
+
+    return { subject, subjectHours, effectiveHours, predicted, delta, target, onTrack, hoursPerWeekGap }
   })
 
   return (
@@ -131,14 +141,17 @@ export default function GradePredictor({ subjects, totals, totalWeeks }: GradePr
           <thead>
             <tr>
               <th>Subject</th>
-              <th>Current Grade</th>
+              <th>Current</th>
+              <th>Target</th>
+              <th>Difficulty</th>
               <th>Study Hours</th>
-              <th>Eff. Study Hours</th>
-              <th>Predicted Grade</th>
+              <th>Eff. Hours</th>
+              <th>Predicted</th>
+              <th>Gap / week</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ subject, subjectHours, effectiveHours, predicted, delta }) => (
+            {rows.map(({ subject, subjectHours, effectiveHours, predicted, delta, target, onTrack, hoursPerWeekGap }) => (
               <tr key={subject.id}>
                 <td>
                   <span
@@ -148,6 +161,12 @@ export default function GradePredictor({ subjects, totals, totalWeeks }: GradePr
                   {subject.name}
                 </td>
                 <td className="grade-predictor__grade-cell">{subject.currentGrade}</td>
+                <td className="grade-predictor__grade-cell grade-predictor__grade-cell--target">{target}</td>
+                <td>
+                  <span className={`grade-predictor__difficulty grade-predictor__difficulty--${subject.difficulty ?? 'medium'}`}>
+                    {(subject.difficulty ?? 'medium')[0].toUpperCase() + (subject.difficulty ?? 'medium').slice(1)}
+                  </span>
+                </td>
                 <td>{subjectHours.toFixed(1)}</td>
                 <td>{effectiveHours.toFixed(1)}</td>
                 <td>
@@ -163,6 +182,15 @@ export default function GradePredictor({ subjects, totals, totalWeeks }: GradePr
                     {predicted}
                     {delta > 0 ? ' ▲' : delta < 0 ? ' ▼' : ' —'}
                   </span>
+                </td>
+                <td>
+                  {onTrack ? (
+                    <span className="grade-predictor__gap grade-predictor__gap--ok">on track ✓</span>
+                  ) : (
+                    <span className="grade-predictor__gap grade-predictor__gap--under">
+                      +{hoursPerWeekGap.toFixed(1)} h/wk ▲
+                    </span>
+                  )}
                 </td>
               </tr>
             ))}

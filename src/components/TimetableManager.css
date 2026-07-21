@@ -1,0 +1,121 @@
+/* ─── TimetableManager — chip bar for named timetables ─────────────────────── */
+
+.ttm {
+  padding: 8px 12px 0;
+  flex-shrink: 0;
+}
+
+.ttm__chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Individual timetable chip */
+.ttm__chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 20px;
+  background: var(--surface, #f7f8fa);
+  font-size: 13px;
+  color: var(--text, #1f2328);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ttm__chip:hover {
+  border-color: var(--accent, #3b82d4);
+}
+
+.ttm__chip--active {
+  background: var(--accent, #3b82d4);
+  border-color: var(--accent, #3b82d4);
+  color: #fff;
+  font-weight: 500;
+}
+
+.ttm__chip--active .ttm__icon-btn {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ttm__chip--active .ttm__icon-btn:hover {
+  color: #fff;
+}
+
+.ttm__chip-name {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Inline rename input */
+.ttm__rename-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: inherit;
+  width: 120px;
+  padding: 0;
+}
+
+/* Icon buttons inside chips */
+.ttm__icon-btn {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  font-size: 11px;
+  color: var(--muted, #57606a);
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.ttm__icon-btn:hover {
+  opacity: 1;
+}
+
+.ttm__icon-btn--delete:hover {
+  color: #f87171;
+}
+
+/* Add button */
+.ttm__add-btn {
+  padding: 4px 12px;
+  border: 1px dashed var(--accent, #3b82d4);
+  border-radius: 20px;
+  background: none;
+  font-size: 13px;
+  color: var(--accent, #3b82d4);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ttm__add-btn:hover {
+  background: color-mix(in srgb, var(--accent, #3b82d4) 12%, transparent);
+}
+
+/* Import button */
+.ttm__import-btn {
+  padding: 4px 12px;
+  border: 1px dashed var(--muted, #57606a);
+  border-radius: 20px;
+  background: none;
+  font-size: 13px;
+  color: var(--muted, #57606a);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.ttm__import-btn:hover {
+  border-color: var(--accent, #3b82d4);
+  color: var(--accent, #3b82d4);
+  background: color-mix(in srgb, var(--accent, #3b82d4) 12%, transparent);
+}

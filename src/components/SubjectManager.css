@@ -2,7 +2,7 @@
 
 .subject-manager {
   padding: 24px;
-  max-width: 700px;
+  max-width: 800px;
 }
 
 .subject-manager__title {
@@ -33,14 +33,38 @@
   margin-bottom: 16px;
 }
 
+.sm-card {
+  background: var(--surface, #f7f8fa);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
 .sm-row {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  background: var(--surface, #f7f8fa);
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: 6px;
+  flex-wrap: wrap;
+}
+
+/* Top sub-row: swatch + name + grades — always on their own line */
+.sm-row__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Bottom sub-row: segmented controls + actions */
+.sm-row__bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  flex-wrap: wrap;
+  padding-left: 28px; /* indent to align under the name field */
 }
 
 /* ── Colour swatch circle ─────────────────────────────────────────────── */
@@ -59,7 +83,7 @@
   border: 1px solid var(--border, #e5e7eb);
   border-radius: 4px;
   padding: 4px 8px;
-  background: #fff;
+  background: var(--bg, #fff);
   color: var(--text, #1f2328);
   min-width: 0;
 }
@@ -88,9 +112,15 @@
   border: 1px solid var(--border, #e5e7eb);
   border-radius: 4px;
   padding: 3px 6px;
-  background: #fff;
+  background: var(--bg, #fff);
   color: var(--text, #1f2328);
   cursor: pointer;
+}
+
+/* Target grade select gets a subtle purple tint to distinguish from current grade */
+.sm-grade-select--target {
+  border-color: var(--secondary, #7c5cd8);
+  color: var(--secondary, #7c5cd8);
 }
 
 /* ── Colour label+input ───────────────────────────────────────────────── */
@@ -128,9 +158,9 @@
 }
 
 .sm-delete-btn:hover {
-  color: #c0392b;
-  border-color: #c0392b;
-  background: #fdf3f2;
+  color: #f87171;
+  border-color: #f87171;
+  background: color-mix(in srgb, #f87171 12%, transparent);
 }
 
 /* ── Add button ───────────────────────────────────────────────────────── */
@@ -147,5 +177,222 @@
 }
 
 .sm-add-btn:hover {
-  background: #e8f0fe;
+  background: color-mix(in srgb, var(--accent, #3b82d4) 12%, transparent);
 }
+
+/* ── Difficulty segmented control ────────────────────────────────────────── */
+.sm-difficulty {
+  display: flex;
+  flex-shrink: 0;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sm-difficulty__btn {
+  flex: 1;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border, #e5e7eb);
+  color: var(--muted, #57606a);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.sm-difficulty__btn:last-child {
+  border-right: none;
+}
+
+.sm-difficulty__btn--active.sm-difficulty__btn--easy {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.sm-difficulty__btn--active.sm-difficulty__btn--medium {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.sm-difficulty__btn--active.sm-difficulty__btn--hard {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+
+/* ── Priority segmented control ─────────────────────────────────────────── */
+.sm-priority {
+  display: flex;
+  flex-shrink: 0;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sm-priority__btn {
+  flex: 1;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border, #e5e7eb);
+  color: var(--muted, #57606a);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.sm-priority__btn:last-child {
+  border-right: none;
+}
+
+/* Low = blue-grey */
+.sm-priority__btn--active.sm-priority__btn--1 {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* Normal = blue */
+.sm-priority__btn--active.sm-priority__btn--2 {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* High = amber */
+.sm-priority__btn--active.sm-priority__btn--3 {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* ── History toggle button ──────────────────────────────────────────────── */
+.sm-history-toggle {
+  margin-left: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
+  background: none;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 4px;
+  color: var(--muted, #57606a);
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sm-history-toggle:hover {
+  border-color: var(--accent, #3b82d4);
+  color: var(--accent, #3b82d4);
+}
+
+.sm-history-count {
+  background: var(--accent, #3b82d4);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0 5px;
+  font-size: 10px;
+}
+
+/* ── History section ────────────────────────────────────────────────────── */
+.sm-history {
+  border-top: 1px solid var(--border, #e5e7eb);
+  padding: 10px 12px 12px;
+  background: var(--bg, #fff);
+}
+
+.sm-history__empty {
+  font-size: 12px;
+  color: var(--muted, #57606a);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+/* Snapshot row */
+.sm-snapshot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  font-size: 13px;
+}
+
+.sm-snapshot:last-of-type {
+  border-bottom: none;
+}
+
+.sm-snapshot__date {
+  color: var(--muted, #57606a);
+  font-size: 12px;
+  min-width: 80px;
+}
+
+.sm-snapshot__grade {
+  font-weight: 700;
+  font-size: 12px;
+  padding: 1px 7px;
+  border-radius: 8px;
+  background: var(--border, #e5e7eb);
+  color: var(--text, #1f2328);
+}
+
+.sm-snapshot__note {
+  flex: 1;
+  font-size: 12px;
+  color: var(--muted, #57606a);
+}
+
+.sm-snapshot__delete {
+  background: none;
+  border: none;
+  font-size: 11px;
+  color: var(--muted, #57606a);
+  cursor: pointer;
+  padding: 0 2px;
+  margin-left: auto;
+}
+
+.sm-snapshot__delete:hover {
+  color: #c0392b;
+}
+
+/* Add-snapshot form */
+.sm-history__add-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.sm-history__date-input,
+.sm-history__note-input {
+  font-size: 12px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 4px;
+  padding: 3px 6px;
+  color: var(--text, #1f2328);
+  background: var(--bg, #fff);
+}
+
+.sm-history__date-input { width: 130px; }
+.sm-history__note-input { flex: 1; min-width: 100px; }
+
+.sm-history__add-btn {
+  padding: 3px 10px;
+  font-size: 12px;
+  background: var(--accent, #3b82d4);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sm-history__add-btn:hover {
+  opacity: 0.88;
+}
+

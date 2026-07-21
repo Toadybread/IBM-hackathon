@@ -184,6 +184,61 @@
   color: var(--text-muted);
 }
 
+/* Target grade cell — subtle purple */
+.grade-predictor__grade-cell--target {
+  color: var(--secondary, #7c5cd8);
+}
+
+/* Gap / week column */
+.grade-predictor__gap {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.grade-predictor__gap--ok {
+  background: color-mix(in srgb, #22c55e 18%, transparent);
+  color: #16a34a;
+}
+
+.grade-predictor__gap--under {
+  background: color-mix(in srgb, #ef4444 18%, transparent);
+  color: #dc2626;
+}
+
+[data-theme="dark"] .grade-predictor__gap--ok  { color: #4ade80; }
+[data-theme="dark"] .grade-predictor__gap--under { color: #f87171; }
+
+
+
+/* Difficulty badges */
+.grade-predictor__difficulty {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.grade-predictor__difficulty--easy   {
+  background: color-mix(in srgb, #22c55e 18%, transparent);
+  color: #16a34a;
+}
+.grade-predictor__difficulty--medium {
+  background: color-mix(in srgb, #eab308 18%, transparent);
+  color: #a16207;
+}
+.grade-predictor__difficulty--hard   {
+  background: color-mix(in srgb, #ef4444 18%, transparent);
+  color: #dc2626;
+}
+
+[data-theme="dark"] .grade-predictor__difficulty--easy   { color: #4ade80; }
+[data-theme="dark"] .grade-predictor__difficulty--medium { color: #fbbf24; }
+[data-theme="dark"] .grade-predictor__difficulty--hard   { color: #f87171; }
+
 /* Predicted grade badges */
 
 .grade-predictor__predicted {
@@ -195,19 +250,22 @@
 }
 
 .grade-predictor__predicted--up {
-  background: #dcfce7;
-  color: #15803d;
+  background: color-mix(in srgb, #22c55e 18%, transparent);
+  color: #16a34a;
 }
 
 .grade-predictor__predicted--down {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: color-mix(in srgb, #ef4444 18%, transparent);
+  color: #dc2626;
 }
 
 .grade-predictor__predicted--same {
   background: var(--border);
   color: var(--text-muted);
 }
+
+[data-theme="dark"] .grade-predictor__predicted--up   { color: #4ade80; }
+[data-theme="dark"] .grade-predictor__predicted--down { color: #f87171; }
 
 .grade-predictor__weeks-note {
   margin-top: 14px;

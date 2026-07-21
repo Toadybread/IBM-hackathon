@@ -5,10 +5,16 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Timetable & Grade Predictor</title>
-    <script type="module" crossorigin src="/assets/index-C4rhl5uW.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DU9vgDSO.css">
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t) document.documentElement.dataset.theme = JSON.parse(t);
+      } catch(e) {}
+    </script>
+    <script type="module" crossorigin src="/assets/index-D8URTCQE.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BT6HlSiB.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>

@@ -34,6 +34,16 @@
   --gap: 12px;
 }
 
+/* ─── Dark theme — MUST come after :root so it wins the cascade ─────────── */
+:root[data-theme="dark"] {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #58a6ff;
+}
+
 /* ─── Base ───────────────────────────────────────────────────────────────── */
 html,
 body {

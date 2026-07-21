@@ -77,11 +77,20 @@
   padding: 0;
 }
 
+/* ─── Timetable tab: chip bar on top, two-column editor below ────────────── */
+.timetable-tab-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 /* ─── Timetable two-column layout ────────────────────────────────────────── */
 .timetable-layout {
   display: flex;
-  height: 100%;
+  flex: 1;
   overflow: hidden;
+  min-height: 0;
 }
 
 .timetable-area {
